@@ -66,9 +66,9 @@ async def on_message(message):
             await bot.send_message(message.channel, getquote())
         elif 'justin sun' in message.content.lower():
             await bot.send_message(message.channel, randomsun())
-        elif message.content.startswith("moon"):
+        elif message.content.lower().startswith("moon"):
             await bot.send_message(message.channel, ":full_moon:")
-        elif message.content.startswith("whale"):
+        elif message.content.lower().startswith("whale"):
             await bot.send_message(message.channel, ":whale:")
     await bot.process_commands(message)
 
