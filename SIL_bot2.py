@@ -30,6 +30,13 @@ async def addquote(message):
     with open("SILquote_file.txt", "wb") as writefile:
         pickle.dump(SILquote_list, writefile)
 
+    # Some kind of confirmation that quote was added.
+    if message.author.display_name != message.author.name:
+        display_name = message.author.display_name
+    print('Quote by ' + message.author.name + '(' + display_name + ') added:')
+    print(message.content[9:])
+    print('------')
+
 def getquote():
     '''Get quote from SIL flatfile'''
     if not os.path.isfile("SILquote_file.txt"):
