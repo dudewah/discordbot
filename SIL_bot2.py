@@ -139,8 +139,8 @@ async def satoshis(currency: str):
     crypto = market.ticker(currency)[0]
     symbol = crypto.get('symbol')
     crypto_price = float(crypto.get('price_btc'))
-    header = 'Price of ' + symbol + ' in BTC'
-    text = str(format(crypto_price, ",f")) + ' BTC'
+    header = 'Price of ' + symbol + ' in satoshis'
+    text = str(format(crypto_price, ",f")) + ' satoshis'
     embed.add_field(name=header, value=text, inline=True)
     await bot.say(embed=embed)
 
