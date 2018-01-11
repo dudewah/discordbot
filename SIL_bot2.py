@@ -19,16 +19,16 @@ market = coinmarketcap.Market()
 # Helper functions
 ##############################################################
 
-def addquote(message):
+async def addquote(message):
     '''Add quote to the SIL flatfile'''
     if not os.path.isfile("SILquote_file.txt"):
         SILquote_list = []
     else:
         with open("SILquote_file.txt", "rb") as readfile:
             SILquote_list = pickle.load(readfile)
-        SILquote_list.append(message.content[9:])
-        with open("SILquote_file.txt", "wb") as writefile:
-            pickle.dump(SILquote_list, writefile)
+    SILquote_list.append(message.content[9:])
+    with open("SILquote_file.txt", "wb") as writefile:
+        pickle.dump(SILquote_list, writefile)
 
 def getquote():
     '''Get quote from SIL flatfile'''
@@ -61,7 +61,7 @@ async def on_ready():
 async def on_message(message):
     if message.author.id != bot.user.id:
         if message.content.startswith("addquote"):
-            addquote(message)
+            await addquote(message)
         elif 'SIL' in message.content:
             await bot.send_message(message.channel, getquote())
         elif 'justin sun' in message.content.lower():
