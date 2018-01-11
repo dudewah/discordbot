@@ -278,4 +278,4 @@ async def currencypercentage(currency: str):
     embed.add_field(name=header, value=text, inline=True)
     await bot.say(embed=embed)
 
-bot.run('NDAwODA4MTQxNTgwNzk1OTE2.DThDsw.ifcE3wGT4ivVhtToJWLLYMblY98')
+bot.run('')
