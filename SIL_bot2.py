@@ -16,6 +16,37 @@ bot = commands.Bot(command_prefix="!")
 market = coinmarketcap.Market()
 
 ##############################################################
+# Helper functions
+##############################################################
+
+def addquote(message):
+    '''Add quote to the SIL flatfile'''
+    if not os.path.isfile("SILquote_file.txt"):
+        SILquote_list = []
+    else:
+        with open("SILquote_file.txt", "rb") as readfile:
+            SILquote_list = pickle.load(readfile)
+        SILquote_list.append(message.content[9:])
+        with open("SILquote_file.txt", "wb") as writefile:
+            pickle.dump(SILquote_list, writefile)
+
+def getquote():
+    '''Get quote from SIL flatfile'''
+    if not os.path.isfile("SILquote_file.txt"):
+        SILquote_list = []
+    else:
+        with open("SILquote_file.txt", "rb") as readfile:
+            SILquote_list = pickle.load(readfile)
+    return random.choice(SILquote_list)
+
+def randomsun():
+    '''get a random justin sun emoji'''
+    roll = random.randint(0, 1)
+    if roll == 1:
+        return ':justin_sun:'
+    return ':justin_sunbae:'
+
+##############################################################
 # General bot commands
 ##############################################################
 
@@ -30,18 +61,11 @@ async def on_ready():
 async def on_message(message):
     if message.author.id != bot.user.id:
         if message.content.startswith("addquote"):
-            if not os.path.isfile("SILquote_file.txt"):
-                SILquote_list = []
-            else:
-                with open("SILquote_file.txt", "rb") as SILquote_file:
-                    SILquote_list = pickle.load(SILquote_file)
-            SILquote_list.append(message.content[9:])
-            with open("SILquote_file.txt", "wb") as SILquote_file:
-                pickle.dump(SILquote_list, SILquote_file)
-        elif "SIL" in message.content:
-            with open("SILquote_file.txt", "rb") as SILquote_file:
-                SILquote_list = pickle.load(SILquote_file)
-            await bot.send_message(message.channel, random.choice(SILquote_list))
+            addquote(message)
+        elif 'SIL' in message.content:
+            await bot.send_message(message.channel, getquote())
+        elif 'justin sun' in message.content.lower():
+            await bot.send_message(message.channel, randomsun())
         elif message.content.startswith("moon"):
             await bot.send_message(message.channel, ":full_moon:")
         elif message.content.startswith("whale"):
@@ -278,4 +302,4 @@ async def currencypercentage(currency: str):
     embed.add_field(name=header, value=text, inline=True)
     await bot.say(embed=embed)
 
-bot.run('NDAwODA4MTQxNTgwNzk1OTE2.DThDsw.ifcE3wGT4ivVhtToJWLLYMblY98')
+bot.run('')
