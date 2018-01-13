@@ -51,8 +51,8 @@ def randomsun():
     '''get a random justin sun emoji'''
     roll = random.randint(0, 1)
     if roll == 1:
-        return ':justin_sun:'
-    return ':justin_sunbae:'
+        return '<:justinsun:400529586162630657>'
+    return '<:justin_sunbae:400530503985397760>'
 
 def update_symbol_mapping():
 
@@ -71,11 +71,11 @@ def convert_symbol_to_currency_id(symbol):
 
     ''' convert symbol to currency_id '''
 
-    if os.path.exists('symbol_map.json'):
-        with open('symbol_map.json', 'r') as readfile:
-            symbol_map = json.load(readfile)
-    else:
+    if not os.path.exists('symbol_map.json'):
         update_symbol_mapping()
+   
+    with open('symbol_map.json', 'r') as readfile:
+         symbol_map = json.load(readfile)
 
     conversion = symbol_map.get(symbol.lower(), '')
 
@@ -103,9 +103,9 @@ async def on_message(message):
             await bot.send_message(message.channel, getquote())
         elif 'justin sun' in message.content.lower():
             await bot.send_message(message.channel, randomsun())
-        elif message.content.lower().startswith("moon"):
+        elif "moon" in message.content.lower():
             await bot.send_message(message.channel, ":full_moon:")
-        elif message.content.lower().startswith("whale"):
+        elif "whale" in message.content.lower():
             await bot.send_message(message.channel, ":whale:")
     await bot.process_commands(message)
 
@@ -129,7 +129,7 @@ async def add(left: float, right: float):
 
 @bot.command()
 async def exponent(number: float, power: float):
-    """raises the first number to the exponent of the second number"""
+    """raises the 1st no. to the exponent of the 2nd no."""
     embed = discord.Embed()
     header = str(number) + ' to the power of ' + str(power)
     text = str(number ** power)
@@ -263,7 +263,7 @@ async def dailypercent(currency: str):
 
 @bot.command()
 async def weeklypercent(currency: str):
-    """pulls 24hr percent change for currency"""
+    """pulls weekly percent change for currency"""
     embed = discord.Embed()
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
@@ -339,4 +339,5 @@ async def currencypercentage(currency: str):
     embed.add_field(name=header, value=text, inline=True)
     await bot.say(embed=embed)
 
-bot.run('NDAwODA4MTQxNTgwNzk1OTE2.DTr2rg.CVlz_Rl-BFccslDzK1X0iMGEaFo')
+
+bot.run('Mzk0MzM0MzA1MTU0NzYwNzA0.DSC0Cw.q69MbrIPjDKEFCvaZ8WDmS9TW2g')
