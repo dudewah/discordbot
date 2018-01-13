@@ -73,9 +73,9 @@ def convert_symbol_to_currency_id(symbol):
 
     if not os.path.exists('symbol_map.json'):
         update_symbol_mapping()
-   
+
     with open('symbol_map.json', 'r') as readfile:
-         symbol_map = json.load(readfile)
+        symbol_map = json.load(readfile)
 
     conversion = symbol_map.get(symbol.lower(), '')
 
@@ -158,6 +158,38 @@ async def choose(*choices: str):
 ##############################################################
 
 @bot.command()
+async def summary(currency: str):
+    '''pulls price summary for currency'''
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
+    symbol = crypto.get('symbol')
+    crypto_price = float(crypto.get('price_usd'))
+    crypto_price_satoshi = float(crypto.get('price_btc'))
+    crypto_vol = float(crypto.get('24h_volume_usd'))
+    crypto_rank = int(crypto.get('rank'))
+    crypto_marketcap = float(crypto.get('market_cap_usd'))
+    crypto_availsupply = float(crypto.get('available_supply'))
+    crypto_totalsupply = float(crypto.get('total_supply'))
+    crypto_hourlypercent = float(crypto.get('percent_change_1h'))
+    crypto_dailypercent = float(crypto.get('percent_change_24h'))
+    crypto_weeklypercent = float(crypto.get('percent_change_7d'))
+    embed = discord.Embed(color=0x78C0D2)
+    embed2 = discord.Embed(color=0x78C0D2)
+    embed3 = discord.Embed(color=0x78C0D2)
+    embed.add_field(name='Price in USD', value="$" + str(format(crypto_price, ",f")), inline=True)
+    embed.add_field(name='Price in satoshis', value=str(format(crypto_price_satoshi, ",f")) + ' satoshis', inline=True)
+    embed2.add_field(name='Market cap', value='$' + str(format(crypto_marketcap, ',.2f')), inline=True)
+    embed2.add_field(name='24h volume', value='$' + str(format(crypto_vol, ',.2f')), inline=True)
+    embed2.add_field(name='Rank', value=str(crypto_rank), inline=False)
+    embed2.add_field(name='Available Supply', value=str(format(crypto_availsupply, ',.2f')) + ' ' + symbol, inline=True)
+    embed2.add_field(name='Total Supply', value=str(format(crypto_totalsupply, ',.2f')) + ' ' + symbol, inline=True)
+    embed3.add_field(name='Change 1h', value=str(format(crypto_hourlypercent, ',.2f')) + '%', inline=True)
+    embed3.add_field(name='Change 24h', value=str(format(crypto_dailypercent, ',.2f')) + '%', inline=True)
+    embed3.add_field(name='Change 7d', value=str(format(crypto_weeklypercent, ',.2f')) + '%', inline=True)
+    await bot.say(embed=embed)
+    await bot.say(embed=embed2)
+    await bot.say(embed=embed3)
+
+@bot.command()
 async def price(currency: str):
     """pulls price info for currency"""
     embed = discord.Embed()
@@ -230,15 +262,14 @@ async def totalsupply(currency: str):
     await bot.say(embed=embed)
 
 @bot.command()
-async def onehourpercent(currency: str):
+async def hourlypercent(currency: str):
     """pulls 1hr percent change for currency"""
-    embed = discord.Embed()
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
-    crypto_hourpercent = float(crypto.get('percent_change_1h'))
+    crypto_hourlypercent = float(crypto.get('percent_change_1h'))
     header = 'Percent price change in last hour for ' + symbol
-    text = str(format(crypto_hourpercent, ',.2f')) + '%'
-    if crypto_hourpercent >= 0:
+    text = str(format(crypto_hourlypercent, ',.2f')) + '%'
+    if crypto_hourlypercent >= 0:
         embed = discord.Embed(color=0x60E87B)
     else:
         embed = discord.Embed(color=0xD55050)
@@ -248,7 +279,6 @@ async def onehourpercent(currency: str):
 @bot.command()
 async def dailypercent(currency: str):
     """pulls 24hr percent change for currency"""
-    embed = discord.Embed()
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     crypto_dailypercent = float(crypto.get('percent_change_24h'))
@@ -264,7 +294,6 @@ async def dailypercent(currency: str):
 @bot.command()
 async def weeklypercent(currency: str):
     """pulls weekly percent change for currency"""
-    embed = discord.Embed()
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     crypto_weeklypercent = float(crypto.get('percent_change_7d'))
@@ -339,5 +368,4 @@ async def currencypercentage(currency: str):
     embed.add_field(name=header, value=text, inline=True)
     await bot.say(embed=embed)
 
-
-bot.run('Mzk0MzM0MzA1MTU0NzYwNzA0.DSC0Cw.q69MbrIPjDKEFCvaZ8WDmS9TW2g')
+bot.run('')
