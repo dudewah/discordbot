@@ -49,8 +49,8 @@ def getquote():
 
 def randomsun():
     '''get a random justin sun emoji'''
-    roll = random.randint(0, 1)
-    if roll == 1:
+    roll = random.randint(1, 1000)
+    if roll > 500:
         return '<:justinsun:400529586162630657>'
     return '<:justin_sunbae:400530503985397760>'
 
