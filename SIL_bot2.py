@@ -54,7 +54,7 @@ def randomsun():
         return ':justin_sun:'
     return ':justin_sunbae:'
 
-async def update_symbol_mapping():
+def update_symbol_mapping():
 
     ''' symbol to currency_id map generator '''
 
@@ -67,7 +67,7 @@ async def update_symbol_mapping():
     with open('symbol_map.json', 'w') as outfile:
         json.dump(result, outfile)
 
-async def convert_symbol_to_currency_id(symbol):
+def convert_symbol_to_currency_id(symbol):
 
     ''' convert symbol to currency_id '''
 
@@ -75,19 +75,13 @@ async def convert_symbol_to_currency_id(symbol):
         with open('symbol_map.json', 'r') as readfile:
             symbol_map = json.load(readfile)
     else:
-        await update_symbol_mapping()
+        update_symbol_mapping()
 
     conversion = symbol_map.get(symbol.lower(), '')
 
     if conversion == '':
-        await update_symbol_mapping()
-        with open('symbol_map.json', 'r') as readfile:
-            symbol_map = json.load(readfile)
-        conversion = symbol_map.get(symbol.lower(), '')
-        if conversion == '':
-            return symbol
-    else:
-        return conversion
+        return symbol
+    return conversion
 
 ##############################################################
 # General bot commands
@@ -167,7 +161,7 @@ async def choose(*choices: str):
 async def price(currency: str):
     """pulls price info for currency"""
     embed = discord.Embed()
-    crypto = market.ticker(await convert_symbol_to_currency_id(currency))[0]
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     crypto_price = float(crypto.get('price_usd'))
     header = 'Price of ' + symbol + ' in USD'
@@ -179,7 +173,7 @@ async def price(currency: str):
 async def satoshis(currency: str):
     """pulls price in satoshis for a currency"""
     embed = discord.Embed()
-    crypto = market.ticker(await convert_symbol_to_currency_id(currency))[0]
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     crypto_price = float(crypto.get('price_btc'))
     header = 'Price of ' + symbol + ' in satoshis'
@@ -191,7 +185,7 @@ async def satoshis(currency: str):
 async def volume(currency: str):
     """pulls 24hr volume for currency"""
     embed = discord.Embed()
-    crypto = market.ticker(await convert_symbol_to_currency_id(currency))[0]
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     crypto_vol = float(crypto.get('24h_volume_usd'))
     header = 'Volume of ' + symbol + ' in last 24 hours in USD'
@@ -203,7 +197,7 @@ async def volume(currency: str):
 async def marketcap(currency: str):
     """pulls market cap for currency"""
     embed = discord.Embed()
-    crypto = market.ticker(await convert_symbol_to_currency_id(currency))[0]
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     crypto_marketcap = float(crypto.get('market_cap_usd'))
     header = 'Market cap of ' + symbol + ' in USD'
@@ -215,7 +209,7 @@ async def marketcap(currency: str):
 async def availablesupply(currency: str):
     """pulls current available supply for currency"""
     embed = discord.Embed()
-    crypto = market.ticker(await convert_symbol_to_currency_id(currency))[0]
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     crypto_availsupply = float(crypto.get('available_supply'))
     header = 'Current available supply of ' + symbol
@@ -227,7 +221,7 @@ async def availablesupply(currency: str):
 async def totalsupply(currency: str):
     """pulls current total supply for currency"""
     embed = discord.Embed()
-    crypto = market.ticker(await convert_symbol_to_currency_id(currency))[0]
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     crypto_totalsupply = float(crypto.get('total_supply'))
     header = 'Current total supply of ' + symbol
@@ -239,7 +233,7 @@ async def totalsupply(currency: str):
 async def onehourpercent(currency: str):
     """pulls 1hr percent change for currency"""
     embed = discord.Embed()
-    crypto = market.ticker(await convert_symbol_to_currency_id(currency))[0]
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     crypto_hourpercent = float(crypto.get('percent_change_1h'))
     header = 'Percent price change in last hour for ' + symbol
@@ -255,7 +249,7 @@ async def onehourpercent(currency: str):
 async def dailypercent(currency: str):
     """pulls 24hr percent change for currency"""
     embed = discord.Embed()
-    crypto = market.ticker(await convert_symbol_to_currency_id(currency))[0]
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     crypto_dailypercent = float(crypto.get('percent_change_24h'))
     header = 'Percent price change in last 24 hours for ' + symbol
@@ -271,7 +265,7 @@ async def dailypercent(currency: str):
 async def weeklypercent(currency: str):
     """pulls 24hr percent change for currency"""
     embed = discord.Embed()
-    crypto = market.ticker(await convert_symbol_to_currency_id(currency))[0]
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     crypto_weeklypercent = float(crypto.get('percent_change_7d'))
     header = 'Percent price change in last 7 days for ' + symbol
@@ -337,7 +331,7 @@ async def currencypercentage(currency: str):
     '''pulls currency's percentage of total market cap'''
     embed = discord.Embed()
     cap = market.stats()
-    crypto = market.ticker(await convert_symbol_to_currency_id(currency))[0]
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     currency_percentage = float(float(crypto.get('market_cap_usd'))/cap.get('total_market_cap_usd') * 100)
     header = symbol + ' market share'
