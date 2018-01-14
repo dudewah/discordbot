@@ -34,8 +34,8 @@ async def addquote(message):
     # Some kind of confirmation that quote was added.
     display_name = ''
     if message.author.display_name != message.author.name:
-        display_name = message.author.display_name
-    print('Quote by ' + message.author.name + '(' + display_name + ') added:')
+        display_name = '(' + message.author.display_name + ')'
+    print('Quote by ' + message.author.name + display_name + ' added:')
     print(message.content[9:])
     print('------')
 
