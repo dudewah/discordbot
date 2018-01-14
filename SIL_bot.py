@@ -32,6 +32,7 @@ async def addquote(message):
         pickle.dump(SILquote_list, writefile)
 
     # Some kind of confirmation that quote was added.
+    display_name = ''
     if message.author.display_name != message.author.name:
         display_name = message.author.display_name
     print('Quote by ' + message.author.name + '(' + display_name + ') added:')
@@ -93,6 +94,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+    await bot.change_presence(game=discord.Game(name=' with my BSD crew'))
 
 @bot.event
 async def on_message(message):
@@ -165,27 +167,24 @@ async def summary(currency: str):
     crypto_price = float(crypto.get('price_usd'))
     crypto_price_satoshi = float(crypto.get('price_btc'))
     crypto_vol = float(crypto.get('24h_volume_usd'))
+    crypto_rank = int(crypto.get('rank'))
     crypto_marketcap = float(crypto.get('market_cap_usd'))
     crypto_hourlypercent = float(crypto.get('percent_change_1h'))
     crypto_dailypercent = float(crypto.get('percent_change_24h'))
     crypto_weeklypercent = float(crypto.get('percent_change_7d'))
     url = 'http://coinmarketcap.com/currencies/' + crypto.get('id')
     name = crypto.get('name')
-    embed0 = discord.Embed(title='Summary for ' + name + '('+ symbol + ')', color=0x78C0D2, url=url)
-    embed1 = discord.Embed(color=0x78C0D2)
-    embed2 = discord.Embed(color=0x78C0D2)
-    embed3 = discord.Embed(color=0x78C0D2)
-    embed1.add_field(name='Price in USD', value="$" + str(format(crypto_price, ",f")), inline=True)
-    embed1.add_field(name='Price in satoshis', value=str(format(crypto_price_satoshi, ",f")) + ' satoshis', inline=True)
-    embed2.add_field(name='Market cap', value='$' + str(format(crypto_marketcap, ',.2f')), inline=True)
-    embed2.add_field(name='24h volume', value='$' + str(format(crypto_vol, ',.2f')), inline=True)
-    embed3.add_field(name='Change 1h', value=str(format(crypto_hourlypercent, ',.2f')) + '%', inline=True)
-    embed3.add_field(name='Change 24h', value=str(format(crypto_dailypercent, ',.2f')) + '%', inline=True)
-    embed3.add_field(name='Change 7d', value=str(format(crypto_weeklypercent, ',.2f')) + '%', inline=True)
-    await bot.say(embed=embed0)
-    await bot.say(embed=embed1)
-    await bot.say(embed=embed2)
-    await bot.say(embed=embed3)
+    embed = discord.Embed(title='Summary for ' + name + '('+ symbol + ')', color=0x78C0D2, url=url)
+    embed.add_field(name='Price in USD', value="$" + str(format(crypto_price, ",f")), inline=True)
+    embed.add_field(name='Price in satoshis', value=str(format(crypto_price_satoshi, ",f")) + ' satoshis', inline=True)
+    embed.add_field(name='\u200b', value='\u200b', inline=True)
+    embed.add_field(name='Market cap', value='$' + str(format(crypto_marketcap, ',.2f')), inline=True)
+    embed.add_field(name='24h volume', value='$' + str(format(crypto_vol, ',.2f')), inline=True)
+    embed.add_field(name='Rank', value=str(crypto_rank), inline=True)
+    embed.add_field(name='Change 1h', value=str(format(crypto_hourlypercent, ',.2f')) + '%', inline=True)
+    embed.add_field(name='Change 24h', value=str(format(crypto_dailypercent, ',.2f')) + '%', inline=True)
+    embed.add_field(name='Change 7d', value=str(format(crypto_weeklypercent, ',.2f')) + '%', inline=True)
+    await bot.say(embed=embed)
 
 @bot.command()
 async def price(currency: str):
