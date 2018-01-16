@@ -114,45 +114,61 @@ async def on_message(message):
 @bot.command()
 async def multiply(left: float, right: float):
     """multiplies two numbers together"""
-    embed = discord.Embed()
     header = str(left) + ' * ' + str(right)
     text = str(left * right)
+
+    embed = discord.Embed()
     embed.add_field(name=header, value=text, inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
 async def add(left: float, right: float):
     """Adds two numbers together."""
-    embed = discord.Embed()
     header = str(left) + ' + ' + str(right)
     text = str(left + right)
+
+    embed = discord.Embed()
+    embed.add_field(name=header, value=text, inline=True)
+    await bot.say(embed=embed)
+
+@bot.command()
+async def subtract(left: float, right: float):
+    """Subtract two numbers."""
+    header = str(left) + ' - ' + str(right)
+    text = str(left - right)
+
+    embed = discord.Embed()
     embed.add_field(name=header, value=text, inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
 async def exponent(number: float, power: float):
     """raises the 1st no. to the exponent of the 2nd no."""
-    embed = discord.Embed()
     header = str(number) + ' to the power of ' + str(power)
     text = str(number ** power)
+
+    embed = discord.Embed()
     embed.add_field(name=header, value=text, inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
 async def divide(left: float, right: float):
     """divides first number by second number"""
-    embed = discord.Embed()
     header = str(left) + ' / ' + str(right)
     text = str(left / right)
+
+    embed = discord.Embed()
     embed.add_field(name=header, value=text, inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
 async def choose(*choices: str):
     """randomly chooses between multiple options"""
-    embed = discord.Embed()
+    header = 'Bot has randomly chose...'
     text = random.choice(choices)
-    embed.add_field(name='Bot has randomly chosen...', value=text, inline=True)
+
+    embed = discord.Embed()
+    embed.add_field(name=header, value=text, inline=True)
     await bot.say(embed=embed)
 
 ##############################################################
@@ -169,50 +185,50 @@ async def summary(currency: str):
 
     crypto_price = crypto.get('price_usd')
     if crypto_price and float(crypto_price) >= 10.0:
-        crypto_price = format(crypto_price, ',.2f')
+        crypto_price = format(float(crypto_price), ',.2f')
     elif crypto_price and float(crypto_price) < 10.0:
-        crypto_price = format(crypto_price, ',f')
+        crypto_price = format(float(crypto_price), ',f')
 
     crypto_price_satoshi = crypto.get('price_btc')
     if crypto_price_satoshi:
-        crypto_price_satoshi = format(crypto_price_satoshi, ',f')
+        crypto_price_satoshi = format(float(crypto_price_satoshi), ',f')
 
     crypto_rank = crypto.get('rank')
 
     crypto_availsupply = crypto.get('available_supply')
     if crypto_availsupply:
-        crypto_availsupply = format(crypto_availsupply, ',.2f')
+        crypto_availsupply = format(float(crypto_availsupply), ',.2f')
 
     crypto_vol = crypto.get('24h_volume_usd')
     if crypto_vol:
-        crypto_vol = format(crypto_vol, ',.2f')
+        crypto_vol = format(float(crypto_vol), ',.2f')
 
     crypto_marketcap = crypto.get('market_cap_usd')
     if crypto_marketcap:
-        crypto_marketcap = format(crypto_marketcap, ',.2f')
+        crypto_marketcap = format(float(crypto_marketcap), ',.2f')
 
     crypto_hourlypercent = crypto.get('percent_change_1h')
     if crypto_hourlypercent:
-        crypto_hourlypercent = format(crypto_hourlypercent, ',.2f')
+        crypto_hourlypercent = format(float(crypto_hourlypercent), ',.2f')
 
-    crypto_dailypercent = float(crypto.get('percent_change_24h'))
+    crypto_dailypercent = crypto.get('percent_change_24h')
     if crypto_dailypercent:
-        crypto_dailypercent = format(crypto_dailypercent, ',.2f')
+        crypto_dailypercent = format(float(crypto_dailypercent), ',.2f')
 
-    crypto_weeklypercent = float(crypto.get('percent_change_7d'))
+    crypto_weeklypercent = crypto.get('percent_change_7d')
     if crypto_weeklypercent:
-        crypto_weeklypercent = format(crypto_weeklypercent, ',.2f')
+        crypto_weeklypercent = format(float(crypto_weeklypercent), ',.2f')
 
     embed = discord.Embed(title='Summary for ' + name + '('+ symbol + ')', color=0x78C0D2, url=url)
-    embed.add_field(name='Price in USD', value="$" + crypto_price, inline=True)
-    embed.add_field(name='Price in Satoshi', value=crypto_price_satoshi + ' satoshi', inline=True)
-    embed.add_field(name='Rank', value=crypto_rank, inline=True)
-    embed.add_field(name='Market Cap', value='$' + crypto_marketcap, inline=True)
-    embed.add_field(name='Volume 24h', value='$' + crypto_vol, inline=True)
-    embed.add_field(name='Circulation', value=crypto_availsupply + ' ' + symbol, inline=True)
-    embed.add_field(name='Change 1h', value=crypto_hourlypercent + '%', inline=True)
-    embed.add_field(name='Change 24h', value=crypto_dailypercent + '%', inline=True)
-    embed.add_field(name='Change 7d', value=crypto_weeklypercent + '%', inline=True)
+    embed.add_field(name='Price in USD', value="$" + str(crypto_price), inline=True)
+    embed.add_field(name='Price in Satoshi', value=str(crypto_price_satoshi) + ' satoshi', inline=True)
+    embed.add_field(name='Rank', value=str(crypto_rank), inline=True)
+    embed.add_field(name='Market Cap', value='$' + str(crypto_marketcap), inline=True)
+    embed.add_field(name='Volume 24h', value='$' + str(crypto_vol), inline=True)
+    embed.add_field(name='Circulation', value=str(crypto_availsupply) + ' ' + symbol, inline=True)
+    embed.add_field(name='Change 1h', value=str(crypto_hourlypercent) + '%', inline=True)
+    embed.add_field(name='Change 24h', value=str(crypto_dailypercent) + '%', inline=True)
+    embed.add_field(name='Change 7d', value=str(crypto_weeklypercent) + '%', inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -224,14 +240,14 @@ async def price(currency: str):
 
     crypto_price = crypto.get('price_usd')
     if crypto_price and float(crypto_price) >= 10.0:
-        crypto_price = format(crypto_price, ',.2f')
+        crypto_price = format(float(crypto_price), ',.2f')
     elif crypto_price and float(crypto_price) < 10.0:
-        crypto_price = format(crypto_price, ',f')
+        crypto_price = format(float(crypto_price), ',f')
 
     header = 'Price of ' + name + '(' + symbol + ') in USD'
 
     embed = discord.Embed()
-    embed.add_field(name=header, value='$' + crypto_price, inline=True)
+    embed.add_field(name=header, value='$' + str(crypto_price), inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -243,12 +259,12 @@ async def satoshis(currency: str):
 
     crypto_price_satoshi = crypto.get('price_btc')
     if crypto_price_satoshi:
-        crypto_price_satoshi = format(crypto_price_satoshi, ',f')
+        crypto_price_satoshi = format(float(crypto_price_satoshi), ',f')
 
     header = 'Price of ' + name + '(' + symbol + ') in Satoshi'
 
     embed = discord.Embed()
-    embed.add_field(name=header, value=crypto_price_satoshi + ' satoshi', inline=True)
+    embed.add_field(name=header, value=str(crypto_price_satoshi) + ' satoshi', inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -260,12 +276,12 @@ async def volume(currency: str):
 
     crypto_vol = crypto.get('24h_volume_usd')
     if crypto_vol:
-        crypto_vol = format(crypto_vol, ',.2f')
+        crypto_vol = format(float(crypto_vol), ',.2f')
 
     header = 'Volume of ' + name + '(' + symbol + ') in last 24 hours in USD'
 
     embed = discord.Embed()
-    embed.add_field(name=header, value='$' + crypto_vol, inline=True)
+    embed.add_field(name=header, value='$' + str(crypto_vol), inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -277,12 +293,12 @@ async def marketcap(currency: str):
 
     crypto_marketcap = crypto.get('market_cap_usd')
     if crypto_marketcap:
-        crypto_marketcap = format(crypto_marketcap, ',.2f')
+        crypto_marketcap = format(float(crypto_marketcap), ',.2f')
 
     header = 'Market cap of ' + name + '(' + symbol + ') in USD'
 
     embed = discord.Embed()
-    embed.add_field(name=header, value='$' + crypto_marketcap, inline=True)
+    embed.add_field(name=header, value='$' + str(crypto_marketcap), inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -294,12 +310,12 @@ async def availablesupply(currency: str):
 
     crypto_availsupply = crypto.get('available_supply')
     if crypto_availsupply:
-        crypto_availsupply = format(crypto_availsupply, ',.2f')
+        crypto_availsupply = format(float(crypto_availsupply), ',.2f')
 
     header = 'Current available supply of ' + name + '(' + symbol + ')'
 
     embed = discord.Embed()
-    embed.add_field(name=header, value=crypto_availsupply + ' ' + symbol, inline=True)
+    embed.add_field(name=header, value=str(crypto_availsupply) + ' ' + symbol, inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -311,12 +327,12 @@ async def totalsupply(currency: str):
 
     crypto_totalsupply = crypto.get('total_supply')
     if crypto_totalsupply:
-        crypto_totalsupply = format(crypto_totalsupply, ',.2f')
+        crypto_totalsupply = format(float(crypto_totalsupply), ',.2f')
 
     header = 'Current total supply of ' + name + '(' + symbol + ')'
 
     embed = discord.Embed()
-    embed.add_field(name=header, value=crypto_totalsupply + ' ' + symbol, inline=True)
+    embed.add_field(name=header, value=str(crypto_totalsupply) + ' ' + symbol, inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -328,7 +344,7 @@ async def hourlypercent(currency: str):
 
     crypto_hourlypercent = crypto.get('percent_change_1h')
     if crypto_hourlypercent:
-        crypto_hourlypercent = format(crypto_hourlypercent, ',.2f')
+        crypto_hourlypercent = format(float(crypto_hourlypercent), ',.2f')
 
     header = 'Percent price change in last hour for ' + name + '(' + symbol + ')'
 
@@ -336,7 +352,7 @@ async def hourlypercent(currency: str):
         embed = discord.Embed(color=0x60E87B)
     else:
         embed = discord.Embed(color=0xD55050)
-    embed.add_field(name=header, value=crypto_hourlypercent + '%', inline=True)
+    embed.add_field(name=header, value=str(crypto_hourlypercent) + '%', inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -346,17 +362,17 @@ async def dailypercent(currency: str):
     symbol = crypto.get('symbol')
     name = crypto.get('name')
 
-    crypto_dailypercent = float(crypto.get('percent_change_24h'))
+    crypto_dailypercent = crypto.get('percent_change_24h')
     if crypto_dailypercent:
-        crypto_dailypercent = format(crypto_dailypercent, ',.2f')
+        crypto_dailypercent = format(float(crypto_dailypercent), ',.2f')
 
     header = 'Percent price change in last 24 hours for ' + name + '(' + symbol + ')'
 
-    if crypto_dailypercent >= 0:
+    if float(crypto_dailypercent) >= 0:
         embed = discord.Embed(color=0x60E87B)
     else:
         embed = discord.Embed(color=0xD55050)
-    embed.add_field(name=header, value=crypto_dailypercent + '%', inline=True)
+    embed.add_field(name=header, value=str(crypto_dailypercent) + '%', inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -366,17 +382,17 @@ async def weeklypercent(currency: str):
     symbol = crypto.get('symbol')
     name = crypto.get('name')
 
-    crypto_weeklypercent = float(crypto.get('percent_change_7d'))
+    crypto_weeklypercent = crypto.get('percent_change_7d')
     if crypto_weeklypercent:
-        crypto_weeklypercent = format(crypto_weeklypercent, ',.2f')
+        crypto_weeklypercent = format(float(crypto_weeklypercent), ',.2f')
 
     header = 'Percent price change in last 7 days for ' + name + '(' + symbol + ')'
 
-    if crypto_weeklypercent >= 0:
+    if float(crypto_weeklypercent) >= 0:
         embed = discord.Embed(color=0x60E87B)
     else:
         embed = discord.Embed(color=0xD55050)
-    embed.add_field(name=header, value=crypto_weeklypercent + '%', inline=True)
+    embed.add_field(name=header, value=str(crypto_weeklypercent) + '%', inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -409,12 +425,12 @@ async def totalmarketcap():
 
     total_cap = crypto.get('total_market_cap_usd')
     if total_cap:
-        total_cap = format(total_cap, ',.2f')
+        total_cap = format(float(total_cap), ',.2f')
 
     header = 'Total market cap in USD'
 
     embed = discord.Embed()
-    embed.add_field(name=header, value='$' + total_cap, inline=True)
+    embed.add_field(name=header, value='$' + str(total_cap), inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -424,12 +440,12 @@ async def totalvolume():
 
     total_volume = crypto.get('total_24h_volume_usd')
     if total_volume:
-        total_volume = format(total_volume, ',.2f')
+        total_volume = format(float(total_volume), ',.2f')
 
     header = 'Total market volume in last 24 hours in USD'
 
     embed = discord.Embed()
-    embed.add_field(name=header, value='$' + total_volume, inline=True)
+    embed.add_field(name=header, value='$' + str(total_volume), inline=True)
     await bot.say(embed=embed)
 
 @bot.command()
@@ -439,12 +455,12 @@ async def bitcoinpercentage():
 
     bitcoin_percentage = crypto.get('bitcoin_percentage_of_market_cap')
     if bitcoin_percentage:
-        bitcoin_percentage = format(bitcoin_percentage, ',.2f')
+        bitcoin_percentage = format(float(bitcoin_percentage), ',.2f')
 
     header = 'Bitcoin (BTC) market share'
 
     embed = discord.Embed()
-    embed.add_field(name=header, value=bitcoin_percentage + '%', inline=True)
+    embed.add_field(name=header, value=str(bitcoin_percentage) + '%', inline=True)
     await bot.say(embed=embed)
 
 bot.run('')
