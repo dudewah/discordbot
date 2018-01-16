@@ -10,14 +10,14 @@ import discord
 from discord.ext import commands
 
 ##############################################################
-# Bot initialization
+# Bot initialization #
 ##############################################################
 
 bot = commands.Bot(command_prefix="!")
 market = coinmarketcap.Market()
 
 ##############################################################
-# Helper functions
+# Helper functions #
 ##############################################################
 
 async def addquote(message):
