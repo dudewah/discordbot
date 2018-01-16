@@ -184,9 +184,9 @@ async def summary(currency: str):
     url = 'http://coinmarketcap.com/currencies/' + crypto.get('id')
 
     crypto_price = crypto.get('price_usd')
-    if crypto_price and float(crypto_price) >= 10.0:
+    if crypto_price and float(crypto_price) >= 1.0:
         crypto_price = format(float(crypto_price), ',.2f')
-    elif crypto_price and float(crypto_price) < 10.0:
+    elif crypto_price and float(crypto_price) < 1.0:
         crypto_price = format(float(crypto_price), ',f')
 
     crypto_price_satoshi = crypto.get('price_btc')
@@ -197,15 +197,15 @@ async def summary(currency: str):
 
     crypto_availsupply = crypto.get('available_supply')
     if crypto_availsupply:
-        crypto_availsupply = format(float(crypto_availsupply), ',.2f')
+        crypto_availsupply = format(float(crypto_availsupply), ',.0f')
 
     crypto_vol = crypto.get('24h_volume_usd')
     if crypto_vol:
-        crypto_vol = format(float(crypto_vol), ',.2f')
+        crypto_vol = format(float(crypto_vol), ',.0f')
 
     crypto_marketcap = crypto.get('market_cap_usd')
     if crypto_marketcap:
-        crypto_marketcap = format(float(crypto_marketcap), ',.2f')
+        crypto_marketcap = format(float(crypto_marketcap), ',.0f')
 
     crypto_hourlypercent = crypto.get('percent_change_1h')
     if crypto_hourlypercent:
@@ -239,9 +239,9 @@ async def price(currency: str):
     name = crypto.get('name')
 
     crypto_price = crypto.get('price_usd')
-    if crypto_price and float(crypto_price) >= 10.0:
+    if crypto_price and float(crypto_price) >= 1.0:
         crypto_price = format(float(crypto_price), ',.2f')
-    elif crypto_price and float(crypto_price) < 10.0:
+    elif crypto_price and float(crypto_price) < 1.0:
         crypto_price = format(float(crypto_price), ',f')
 
     header = 'Price of ' + name + '(' + symbol + ') in USD'
@@ -276,7 +276,7 @@ async def volume(currency: str):
 
     crypto_vol = crypto.get('24h_volume_usd')
     if crypto_vol:
-        crypto_vol = format(float(crypto_vol), ',.2f')
+        crypto_vol = format(float(crypto_vol), ',.0f')
 
     header = 'Volume of ' + name + '(' + symbol + ') in last 24 hours in USD'
 
@@ -293,7 +293,7 @@ async def marketcap(currency: str):
 
     crypto_marketcap = crypto.get('market_cap_usd')
     if crypto_marketcap:
-        crypto_marketcap = format(float(crypto_marketcap), ',.2f')
+        crypto_marketcap = format(float(crypto_marketcap), ',.0f')
 
     header = 'Market cap of ' + name + '(' + symbol + ') in USD'
 
@@ -310,7 +310,7 @@ async def availablesupply(currency: str):
 
     crypto_availsupply = crypto.get('available_supply')
     if crypto_availsupply:
-        crypto_availsupply = format(float(crypto_availsupply), ',.2f')
+        crypto_availsupply = format(float(crypto_availsupply), ',.0f')
 
     header = 'Current available supply of ' + name + '(' + symbol + ')'
 
@@ -327,7 +327,7 @@ async def totalsupply(currency: str):
 
     crypto_totalsupply = crypto.get('total_supply')
     if crypto_totalsupply:
-        crypto_totalsupply = format(float(crypto_totalsupply), ',.2f')
+        crypto_totalsupply = format(float(crypto_totalsupply), ',.0f')
 
     header = 'Current total supply of ' + name + '(' + symbol + ')'
 
@@ -425,7 +425,7 @@ async def totalmarketcap():
 
     total_cap = crypto.get('total_market_cap_usd')
     if total_cap:
-        total_cap = format(float(total_cap), ',.2f')
+        total_cap = format(float(total_cap), ',.0f')
 
     header = 'Total market cap in USD'
 
@@ -440,7 +440,7 @@ async def totalvolume():
 
     total_volume = crypto.get('total_24h_volume_usd')
     if total_volume:
-        total_volume = format(float(total_volume), ',.2f')
+        total_volume = format(float(total_volume), ',.0f')
 
     header = 'Total market volume in last 24 hours in USD'
 
