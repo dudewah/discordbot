@@ -181,7 +181,6 @@ async def summary(currency: str):
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     name = crypto.get('name')
-    url = 'http://coinmarketcap.com/currencies/' + crypto.get('id')
 
     crypto_price = crypto.get('price_usd')
     if crypto_price and float(crypto_price) >= 1.0:
@@ -219,17 +218,19 @@ async def summary(currency: str):
     if crypto_weeklypercent:
         crypto_weeklypercent = format(float(crypto_weeklypercent), ',.2f')
 
-    embed = discord.Embed(title='Summary for ' + name + '('+ symbol + ')', color=0x78C0D2, url=url)
-    embed.add_field(name='Price in USD', value="$" + str(crypto_price), inline=True)
-    embed.add_field(name='Price in Satoshi', value=str(crypto_price_satoshi) + ' satoshi', inline=True)
-    embed.add_field(name='Rank', value=str(crypto_rank), inline=True)
-    embed.add_field(name='Market Cap', value='$' + str(crypto_marketcap), inline=True)
-    embed.add_field(name='Volume 24h', value='$' + str(crypto_vol), inline=True)
-    embed.add_field(name='Circulation', value=str(crypto_availsupply) + ' ' + symbol, inline=True)
-    embed.add_field(name='Change 1h', value=str(crypto_hourlypercent) + '%', inline=True)
-    embed.add_field(name='Change 24h', value=str(crypto_dailypercent) + '%', inline=True)
-    embed.add_field(name='Change 7d', value=str(crypto_weeklypercent) + '%', inline=True)
-    await bot.say(embed=embed)
+    text_0 = '```Summary for ' + name + '('+ symbol + ')\n'
+    text_1 = 'Rank: ' + str(crypto_rank) + '\n\n'
+    text_2 = 'Price in USD: $' + str(crypto_price) + '\n'
+    text_3 = 'Price in BTC: ' + str(crypto_price_satoshi) + ' satoshi\n\n'
+    text_4 = 'Market Cap: $' + str(crypto_marketcap) + '\n'
+    text_5 = 'Volume 24h: $' + str(crypto_vol) + '\n'
+    text_6 = 'Circulation: ' + str(crypto_availsupply) + ' ' + symbol + '\n\n'
+    text_7 = 'Change 1h: ' + str(crypto_hourlypercent) + '%\n'
+    text_8 = 'Change 24h: ' + str(crypto_dailypercent) + '%\n'
+    text_9 = 'Change 7d: ' + str(crypto_weeklypercent) + '%```'
+
+    text_message = text_0 + text_1 + text_2 + text_3 + text_4 + text_5 + text_6 + text_7 + text_8 + text_9
+    await bot.say(text_message)
 
 @bot.command()
 async def price(currency: str):
