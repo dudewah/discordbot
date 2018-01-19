@@ -97,6 +97,11 @@ async def on_ready():
     await bot.change_presence(game=discord.Game(name=' with my BSD crew'))
 
 @bot.event
+async def on_member_join(member):
+    text = 'Hey, <@' + member.id + '> you thought you could escape me and my BSD in the Clutchfans Bitcoin thread huh?\n\nSIL'
+    await bot.send_message(bot.get_channel('394681704041807872'), text)
+
+@bot.event
 async def on_message(message):
     if message.author.id != bot.user.id:
         if message.content.startswith("addquote"):
@@ -164,7 +169,7 @@ async def divide(left: float, right: float):
 @bot.command()
 async def choose(*choices: str):
     """randomly chooses between multiple options"""
-    header = 'Bot has randomly chose...'
+    header = 'Bot has randomly chosen...'
     text = random.choice(choices)
 
     embed = discord.Embed()
@@ -175,9 +180,10 @@ async def choose(*choices: str):
 # Coin market cap commands
 ##############################################################
 
-@bot.command()
-async def summary(currency: str):
+@bot.command(pass_context=True)
+async def summary(ctx):
     '''pulls price summary for currency'''
+    currency = ctx.message.content.split()[1]
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     name = crypto.get('name')
@@ -230,11 +236,13 @@ async def summary(currency: str):
     text_9 = 'Change 7d: ' + str(crypto_weeklypercent) + '%```'
 
     text_message = text_0 + text_1 + text_2 + text_3 + text_4 + text_5 + text_6 + text_7 + text_8 + text_9
+    await bot.delete_message(ctx.message)
     await bot.say(text_message)
 
-@bot.command()
-async def price(currency: str):
+@bot.command(pass_context=True)
+async def price(ctx):
     """pulls price info for currency"""
+    currency = ctx.message.content.split()[1]
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     name = crypto.get('name')
@@ -249,11 +257,13 @@ async def price(currency: str):
 
     embed = discord.Embed()
     embed.add_field(name=header, value='$' + str(crypto_price), inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def satoshis(currency: str):
+@bot.command(pass_context=True)
+async def satoshis(ctx):
     """pulls price in satoshis for a currency"""
+    currency = ctx.message.content.split()[1]
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     name = crypto.get('name')
@@ -266,11 +276,13 @@ async def satoshis(currency: str):
 
     embed = discord.Embed()
     embed.add_field(name=header, value=str(crypto_price_satoshi) + ' satoshi', inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def volume(currency: str):
+@bot.command(pass_context=True)
+async def volume(ctx):
     """pulls 24hr volume for currency"""
+    currency = ctx.message.content.split()[1]
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     name = crypto.get('name')
@@ -283,11 +295,13 @@ async def volume(currency: str):
 
     embed = discord.Embed()
     embed.add_field(name=header, value='$' + str(crypto_vol), inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def marketcap(currency: str):
+@bot.command(pass_context=True)
+async def marketcap(ctx):
     """pulls market cap for currency"""
+    currency = ctx.message.content.split()[1]
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     name = crypto.get('name')
@@ -300,11 +314,13 @@ async def marketcap(currency: str):
 
     embed = discord.Embed()
     embed.add_field(name=header, value='$' + str(crypto_marketcap), inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def availablesupply(currency: str):
+@bot.command(pass_context=True)
+async def availablesupply(ctx):
     """pulls current available supply for currency"""
+    currency = ctx.message.content.split()[1]
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     name = crypto.get('name')
@@ -317,11 +333,13 @@ async def availablesupply(currency: str):
 
     embed = discord.Embed()
     embed.add_field(name=header, value=str(crypto_availsupply) + ' ' + symbol, inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def totalsupply(currency: str):
+@bot.command(pass_context=True)
+async def totalsupply(ctx):
     """pulls current total supply for currency"""
+    currency = ctx.message.content.split()[1]
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     name = crypto.get('name')
@@ -334,11 +352,13 @@ async def totalsupply(currency: str):
 
     embed = discord.Embed()
     embed.add_field(name=header, value=str(crypto_totalsupply) + ' ' + symbol, inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def hourlypercent(currency: str):
+@bot.command(pass_context=True)
+async def hourlypercent(ctx):
     """pulls 1hr percent change for currency"""
+    currency = ctx.message.content.split()[1]
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     name = crypto.get('name')
@@ -354,11 +374,13 @@ async def hourlypercent(currency: str):
     else:
         embed = discord.Embed(color=0xD55050)
     embed.add_field(name=header, value=str(crypto_hourlypercent) + '%', inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def dailypercent(currency: str):
+@bot.command(pass_context=True)
+async def dailypercent(ctx):
     """pulls 24hr percent change for currency"""
+    currency = ctx.message.content.split()[1]
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     name = crypto.get('name')
@@ -374,11 +396,13 @@ async def dailypercent(currency: str):
     else:
         embed = discord.Embed(color=0xD55050)
     embed.add_field(name=header, value=str(crypto_dailypercent) + '%', inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def weeklypercent(currency: str):
+@bot.command(pass_context=True)
+async def weeklypercent(ctx):
     """pulls weekly percent change for currency"""
+    currency = ctx.message.content.split()[1]
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
     name = crypto.get('name')
@@ -394,11 +418,14 @@ async def weeklypercent(currency: str):
     else:
         embed = discord.Embed(color=0xD55050)
     embed.add_field(name=header, value=str(crypto_weeklypercent) + '%', inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def cryptoratio(currency1: str, currency2: str):
+@bot.command(pass_context=True)
+async def cryptoratio(ctx):
     """calculates ratio of first crypto to second crypto"""
+    currency1 = ctx.message.content.split()[1]
+    currency2 = ctx.message.content.split()[2]
     crypto1 = market.ticker(convert_symbol_to_currency_id(currency1))[0]
     symbol1 = crypto1.get('symbol')
     name1 = crypto1.get('name')
@@ -417,10 +444,11 @@ async def cryptoratio(currency1: str, currency2: str):
 
     embed = discord.Embed()
     embed.add_field(name=header, value=ratio, inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def totalmarketcap():
+@bot.command(pass_context=True)
+async def totalmarketcap(ctx):
     """pulls total cryptocurrency market cap"""
     crypto = market.stats()
 
@@ -432,10 +460,11 @@ async def totalmarketcap():
 
     embed = discord.Embed()
     embed.add_field(name=header, value='$' + str(total_cap), inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def totalvolume():
+@bot.command(pass_context=True)
+async def totalvolume(ctx):
     """pulls total 24hr market volume"""
     crypto = market.stats()
 
@@ -447,10 +476,11 @@ async def totalvolume():
 
     embed = discord.Embed()
     embed.add_field(name=header, value='$' + str(total_volume), inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def bitcoinpercentage():
+@bot.command(pass_context=True)
+async def bitcoinpercentage(ctx):
     """pulls bitcoin percentage of total market cap"""
     crypto = market.stats()
 
@@ -462,6 +492,7 @@ async def bitcoinpercentage():
 
     embed = discord.Embed()
     embed.add_field(name=header, value=str(bitcoin_percentage) + '%', inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
 bot.run('')
