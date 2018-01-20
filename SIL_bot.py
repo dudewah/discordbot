@@ -176,6 +176,98 @@ async def choose(*choices: str):
     embed.add_field(name=header, value=text, inline=True)
     await bot.say(embed=embed)
 
+@bot.command()
+async def magicball():
+    '''Answer a question with a response'''
+
+    responses = [
+        'It is certain',
+        'It is decidedly so',
+        'Without a doubt',
+        'Yes definitely',
+        'You may rely on it',
+        'As I see it, yes',
+        'Most likely',
+        'Outlook good',
+        'Yes',
+        'Signs point to yes',
+        'Reply hazy try again',
+        'Ask again later',
+        'Better not tell you now',
+        'Cannot predict now',
+        'Concentrate and ask again',
+        'Do not count on it',
+        'My reply is no',
+        'My sources say no',
+        'Outlook not so good',
+        'Very doubtful'
+    ]
+
+    random_number = random.randint(0, 19)
+    if random_number >= 0 and random_number <= 9:
+        embed = discord.Embed(color=0x60E87B)
+    elif random_number >= 10 and random_number <= 14:
+        embed = discord.Embed(color=0xECE357)
+    else:
+        embed = discord.Embed(color=0xD55050)
+
+    header = 'Magic ball says...'
+    text = responses[random_number]
+
+    embed.add_field(name=header, value=text, inline=True)
+    await bot.say(embed=embed)
+
+@bot.command()
+async def coinflip():
+    '''Flips a coin'''
+
+    random_number = random.randint(1, 1000)
+    if random_number >= 500:
+        text = 'It comes up tails'
+    else:
+        text = 'It comes up heads'
+
+    header = 'Bot has flipped a coin...'
+
+    embed = discord.Embed()
+    embed.add_field(name=header, value=text, inline=True)
+    await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def rps(ctx):
+    ''' Play a game of rps '''
+    choice = ctx.message.content.split()[1].lower()
+    if ctx.message.author.id == '177617966102216704':
+        if choice == 'scissors':
+            header = 'You win!'
+            text = 'Bot has chosen paper'
+        elif choice == 'paper':
+            header = 'You win!'
+            text = 'Bot has chosen rock'
+        elif choice == 'rock':
+            header = 'You win!'
+            text = 'Bot has chosen scissors'
+        else:
+            header = 'You win!'
+            text = 'Thinking out of the box, I like it!'
+    else:
+        if choice == 'scissors':
+            header = 'You lose!'
+            text = 'Bot has chosen rock'
+        elif choice == 'paper':
+            header = 'You lose!'
+            text = 'Bot has chosen scissors'
+        elif choice == 'rock':
+            header = 'You lose!'
+            text = 'Bot has chosen paper'
+        else:
+            header = 'You lose!'
+            text = 'That is not a valid choice!'
+
+    embed = discord.Embed()
+    embed.add_field(name=header, value=text, inline=True)
+    await bot.say(embed=embed)
+
 ##############################################################
 # Coin market cap commands
 ##############################################################
