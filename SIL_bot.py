@@ -294,6 +294,7 @@ async def summary(ctx):
     name = crypto.get('name')
 
     crypto_price = crypto.get('price_usd')
+    crypto_price_ = crypto_price
     if crypto_price and float(crypto_price) >= 1.0:
         crypto_price = format(float(crypto_price), ',.2f')
     elif crypto_price and float(crypto_price) < 1.0:
@@ -304,8 +305,8 @@ async def summary(ctx):
         crypto_price_satoshi = format(float(crypto_price_satoshi), ',f')
 
     crypto_price_ether = market.ticker('ethereum')[0].get('price_usd')
-    if crypto_price_ether and crypto_price:
-        crypto_price_ether = format(float(crypto_price/crypto_price_ether, ',f'))
+    if crypto_price_ether and crypto_price_:
+        crypto_price_ether = format(float(crypto_price_)/float(crypto_price_ether), ',f')
 
     crypto_rank = crypto.get('rank')
 
@@ -398,10 +399,10 @@ async def ether(ctx):
     symbol = crypto.get('symbol')
     name = crypto.get('name')
 
-    crypto_price = float(crypto.get('price_usd'))
+    crypto_price = crypto.get('price_usd')
     crypto_price_ether = market.ticker('ethereum')[0].get('price_usd')
     if crypto_price_ether and crypto_price:
-        crypto_price_ether = format(float(crypto_price/crypto_price_ether, ',f'))
+        crypto_price_ether = format(float(crypto_price)/float(crypto_price_ether), ',f')
 
     header = 'Price of ' + name + '(' + symbol + ') in Ether'
 
