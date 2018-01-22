@@ -237,32 +237,45 @@ async def coinflip():
 async def rps(ctx):
     ''' Play a game of rps '''
     choice = ctx.message.content.split()[1].lower()
-    if ctx.message.author.id == '177617966102216704':
-        if choice == 'scissors':
-            header = 'You win!'
-            text = 'Bot has chosen paper'
-        elif choice == 'paper':
-            header = 'You win!'
+    options = {'rock': 1, 'paper': 2, 'scissors': 3}
+
+    choice = options.get(choice, 0)
+    bot_choice = random.randint(1,3)
+
+    if choice == 0:
+        header = 'Error!'
+        text = 'Invalid choice! Try again.'
+    # 1 > 3 > 2 > 1
+    elif choice == 1:
+        if bot_choice == 1:
+            header = 'Tie!'
             text = 'Bot has chosen rock'
-        elif choice == 'rock':
-            header = 'You win!'
-            text = 'Bot has chosen scissors'
-        else:
-            header = 'You win!'
-            text = 'Thinking out of the box, I like it!'
-    else:
-        if choice == 'scissors':
-            header = 'You lose!'
-            text = 'Bot has chosen rock'
-        elif choice == 'paper':
-            header = 'You lose!'
-            text = 'Bot has chosen scissors'
-        elif choice == 'rock':
+        elif bot_choice == 2:
             header = 'You lose!'
             text = 'Bot has chosen paper'
-        else:
+        elif bot_choice == 3:
+            header = 'You win!'
+            text = 'Bot has chosen scissors'
+    elif choice == 2:
+        if bot_choice == 1:
+            header = 'You win!'
+            text = 'Bot has chosen rock'
+        elif bot_choice == 2:
+            header = 'Tie!'
+            text = 'Bot has chosen paper'
+        elif bot_choice == 3:
             header = 'You lose!'
-            text = 'That is not a valid choice!'
+            text = 'Bot has chosen scissors'
+    elif choice == 3:
+        if bot_choice == 1:
+            header = 'You lose!'
+            text = 'Bot has chosen rock'
+        elif bot_choice == 2:
+            header = 'You win!'
+            text = 'Bot has chosen paper'
+        elif bot_choice == 3:
+            header = 'Tie!'
+            text = 'Bot has chosen scissors'
 
     embed = discord.Embed()
     embed.add_field(name=header, value=text, inline=True)
