@@ -240,7 +240,7 @@ async def rps(ctx):
     options = {'rock': 1, 'paper': 2, 'scissors': 3}
 
     choice = options.get(choice, 0)
-    bot_choice = random.randint(1,3)
+    bot_choice = random.randint(1, 3)
 
     if choice == 0:
         header = 'Error!'
