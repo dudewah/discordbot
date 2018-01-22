@@ -109,11 +109,14 @@ async def on_message(message):
         elif 'SIL' in message.content:
             await bot.send_message(message.channel, getquote())
         elif 'justin sun' in message.content.lower():
-            await bot.send_message(message.channel, randomsun())
+            if random.randint(1, 1000) >= 500:
+                await bot.send_message(message.channel, randomsun())
         elif "moon" in message.content.lower():
-            await bot.send_message(message.channel, ":full_moon:")
+            if random.randint(1, 1000) >= 500:
+                await bot.send_message(message.channel, ":full_moon:")
         elif "whale" in message.content.lower():
-            await bot.send_message(message.channel, ":whale:")
+            if random.randint(1, 1000) >= 500:
+                await bot.send_message(message.channel, ":whale:")
     await bot.process_commands(message)
 
 @bot.command()
