@@ -303,6 +303,10 @@ async def summary(ctx):
     if crypto_price_satoshi:
         crypto_price_satoshi = format(float(crypto_price_satoshi), ',f')
 
+    crypto_price_ether = market.ticker('ethereum')[0].get('price_usd')
+    if crypto_price_ether and crypto_price:
+        crypto_price_ether = format(float(crypto_price/crypto_price_ether, ',f'))
+
     crypto_rank = crypto.get('rank')
 
     crypto_availsupply = crypto.get('available_supply')
@@ -329,18 +333,20 @@ async def summary(ctx):
     if crypto_weeklypercent:
         crypto_weeklypercent = format(float(crypto_weeklypercent), ',.2f')
 
+    # This is idiotic, but I hate Python multiline syntax so...
     text_0 = '```Summary for ' + name + '('+ symbol + ')\n'
     text_1 = 'Rank: ' + str(crypto_rank) + '\n\n'
     text_2 = 'Price in USD: $' + str(crypto_price) + '\n'
-    text_3 = 'Price in BTC: ' + str(crypto_price_satoshi) + ' satoshi\n\n'
-    text_4 = 'Market Cap: $' + str(crypto_marketcap) + '\n'
-    text_5 = 'Volume 24h: $' + str(crypto_vol) + '\n'
-    text_6 = 'Circulation: ' + str(crypto_availsupply) + ' ' + symbol + '\n\n'
-    text_7 = 'Change 1h: ' + str(crypto_hourlypercent) + '%\n'
-    text_8 = 'Change 24h: ' + str(crypto_dailypercent) + '%\n'
-    text_9 = 'Change 7d: ' + str(crypto_weeklypercent) + '%```'
+    text_3 = 'Price in BTC: ' + str(crypto_price_satoshi) + ' satoshi\n'
+    text_4 = 'Price in ETH: ' + str(crypto_price_ether) + ' ether\n\n'
+    text_5 = 'Market Cap: $' + str(crypto_marketcap) + '\n'
+    text_6 = 'Volume 24h: $' + str(crypto_vol) + '\n'
+    text_7 = 'Circulation: ' + str(crypto_availsupply) + ' ' + symbol + '\n\n'
+    text_8 = 'Change 1h: ' + str(crypto_hourlypercent) + '%\n'
+    text_9 = 'Change 24h: ' + str(crypto_dailypercent) + '%\n'
+    text_10 = 'Change 7d: ' + str(crypto_weeklypercent) + '%```'
 
-    text_message = text_0 + text_1 + text_2 + text_3 + text_4 + text_5 + text_6 + text_7 + text_8 + text_9
+    text_message = text_0 + text_1 + text_2 + text_3 + text_4 + text_5 + text_6 + text_7 + text_8 + text_9 + text_10
     await bot.delete_message(ctx.message)
     await bot.say(text_message)
 
@@ -366,8 +372,8 @@ async def price(ctx):
     await bot.say(embed=embed)
 
 @bot.command(pass_context=True)
-async def satoshis(ctx):
-    """pulls price in satoshis for a currency"""
+async def satoshi(ctx):
+    """pulls price in satoshi for a currency"""
     currency = ctx.message.content.split()[1]
     crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
     symbol = crypto.get('symbol')
@@ -381,6 +387,26 @@ async def satoshis(ctx):
 
     embed = discord.Embed()
     embed.add_field(name=header, value=str(crypto_price_satoshi) + ' satoshi', inline=True)
+    await bot.delete_message(ctx.message)
+    await bot.say(embed=embed)
+
+@bot.command(pass_context=True)
+async def ether(ctx):
+    """pulls price in ether for a currency"""
+    currency = ctx.message.content.split()[1]
+    crypto = market.ticker(convert_symbol_to_currency_id(currency))[0]
+    symbol = crypto.get('symbol')
+    name = crypto.get('name')
+
+    crypto_price = float(crypto.get('price_usd'))
+    crypto_price_ether = market.ticker('ethereum')[0].get('price_usd')
+    if crypto_price_ether and crypto_price:
+        crypto_price_ether = format(float(crypto_price/crypto_price_ether, ',f'))
+
+    header = 'Price of ' + name + '(' + symbol + ') in Ether'
+
+    embed = discord.Embed()
+    embed.add_field(name=header, value=str(crypto_price_ether) + ' ether', inline=True)
     await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
