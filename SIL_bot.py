@@ -117,56 +117,74 @@ async def on_message(message):
         elif "whale" in message.content.lower():
             if random.randint(1, 1000) >= 500:
                 await bot.send_message(message.channel, ":whale:")
+        elif 'disney' in message.content.lower():
+            if random.randint(1, 1000) >= 500:
+                await bot.send_message(message.channel, "<:feelsbadman:406476583969226762>")
     await bot.process_commands(message)
 
-@bot.command()
-async def multiply(left: float, right: float):
+@bot.command(pass_context=True)
+async def multiply(ctx):
     """multiplies two numbers together"""
+    left = float(ctx.message.content.split()[1])
+    right = float(ctx.message.content.split()[2])
     header = str(left) + ' * ' + str(right)
     text = str(left * right)
 
     embed = discord.Embed()
     embed.add_field(name=header, value=text, inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def add(left: float, right: float):
+@bot.command(pass_context=True)
+async def add(ctx):
     """Adds two numbers together."""
+    left = float(ctx.message.content.split()[1])
+    right = float(ctx.message.content.split()[2])
     header = str(left) + ' + ' + str(right)
     text = str(left + right)
 
     embed = discord.Embed()
     embed.add_field(name=header, value=text, inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def subtract(left: float, right: float):
+@bot.command(pass_context=True)
+async def subtract(ctx):
     """Subtract two numbers."""
+    left = float(ctx.message.content.split()[1])
+    right = float(ctx.message.content.split()[2])
     header = str(left) + ' - ' + str(right)
     text = str(left - right)
 
     embed = discord.Embed()
     embed.add_field(name=header, value=text, inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def exponent(number: float, power: float):
+@bot.command(pass_context=True)
+async def exponent(ctx):
     """raises the 1st no. to the exponent of the 2nd no."""
+    number = float(ctx.message.content.split()[1])
+    power = float(ctx.message.content.split()[2])
     header = str(number) + ' to the power of ' + str(power)
     text = str(number ** power)
 
     embed = discord.Embed()
     embed.add_field(name=header, value=text, inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
-@bot.command()
-async def divide(left: float, right: float):
+@bot.command(pass_context=True)
+async def divide(ctx):
     """divides first number by second number"""
+    left = float(ctx.message.content.split()[1])
+    right = float(ctx.message.content.split()[2])
     header = str(left) + ' / ' + str(right)
     text = str(left / right)
 
     embed = discord.Embed()
     embed.add_field(name=header, value=text, inline=True)
+    await bot.delete_message(ctx.message)
     await bot.say(embed=embed)
 
 @bot.command()
