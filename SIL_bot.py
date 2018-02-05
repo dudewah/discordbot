@@ -90,7 +90,7 @@ async def market_cap_update():
         total_cap = crypto.get('total_market_cap_usd')
         if total_cap:
             total_cap = format(float(total_cap), ',.0f')
-        await bot.change_presence(game=discord.Game(name='$' + total_cap))
+            await bot.change_presence(game=discord.Game(name='$' + total_cap))
         await asyncio.sleep(300)
 
 ##############################################################
