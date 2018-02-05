@@ -84,6 +84,15 @@ def convert_symbol_to_currency_id(symbol):
         return symbol
     return conversion
 
+async def market_cap_update():
+    while True:
+        crypto = market.stats()
+        total_cap = crypto.get('total_market_cap_usd')
+        if total_cap:
+            total_cap = format(float(total_cap), ',.0f')
+        await bot.change_presence(game=discord.Game(name='$' + total_cap))
+        await asyncio.sleep(300)
+
 ##############################################################
 # General bot commands
 ##############################################################
@@ -94,7 +103,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-    await bot.change_presence(game=discord.Game(name=' with my BSD crew'))
+    bot.loop.create_task(market_cap_update())
 
 @bot.event
 async def on_member_join(member):
