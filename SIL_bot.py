@@ -107,7 +107,7 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
-    text = 'Hey, <@' + member.id + '> you thought you could escape me and my BSD in the Clutchfans Bitcoin thread huh?\n\nSIL'
+    text = 'Hey, <@' + member.id + '>!\n\nWelcome to the Clutchfans Crypto Discord. Please change your Discord nickname to your Clutchfans screenname!\n\nThanks,\nSIL'
     await bot.send_message(bot.get_channel('394681704041807872'), text)
 
 @bot.event
